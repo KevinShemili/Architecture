@@ -1,0 +1,8 @@
+﻿Create Migration
+Add-Migration InitialCommit -Project Infrastructure -StartupProject WebAPI
+
+Apply/Update Migration
+Update-Database
+
+Remove Migration
+Remove-Migration

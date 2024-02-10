@@ -2,7 +2,38 @@ version: '3.4'
 
 services:
   webapi:
+    container_name: web-api
     image: ${DOCKER_REGISTRY-}webapi
     build:
       context: .
       dockerfile: WebAPI/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    depends_on:
+      - sqlserverdb
+    networks:
+      - webapinetwork
+  
+  sqlserverdb:
+    container_name: sql-server-db
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-volume:/var/opt/mssql
+    networks:
+      - webapinetwork
+
+networks:
+   webapinetwork:
+     driver: bridge 
+   elastic:
+     driver: bridge
+
+volumes:
+    mssql-volume:
+    elasticsearch-data:
+    sftp-volume:
