@@ -1,6 +1,8 @@
-using Application;
-using Infrastructure;
+using Application.DependencyConfigurations;
+using Domain.Entities.IdentityExtensions;
+using Infrastructure.DependencyConfigurations;
 using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication()
+				.AddCookie(IdentityConstants.ApplicationScheme);
+
 var app = builder.Build();
 
 // Call here if you want to apply migrations directly when starting application
@@ -30,6 +36,8 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+app.MapIdentityApi<User>();
 
 app.Run();
 
