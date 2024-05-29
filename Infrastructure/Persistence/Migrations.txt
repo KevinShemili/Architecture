@@ -1,8 +1,21 @@
-﻿Create Migration
+﻿1. Create Migration
 Add-Migration InitialCommit -Project Infrastructure -StartupProject WebAPI
 
-Apply/Update Migration
-Update-Database
+2. Apply Migration
+Update-Database => {
+	In order for this to work the following should be done:
+	var connection = @"Server=127.0.0.1\temp-server-db,1433;Database=CreateDatabase;
+						User Id=sa;Password=Pass@word;Persist Security Info=False;TrustServerCertificate=True";
 
-Remove Migration
+	In SSMS Server Name:127.0.0.1\temp-server-db
+			SQL Server Authentication
+			User: sa
+			Password: Pass@word
+
+	Also Update-Database reads from the default appsettings.json cannot 
+	specify to read from appsettings.Docker.json. So connection string should
+	be shared across all appsettings.
+}
+
+3. Remove Migration
 Remove-Migration
