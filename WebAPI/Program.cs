@@ -20,7 +20,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-ApplyMigrations(app);
+// Call here if you want to apply migrations directly when starting application
+//ApplyMigrations(app); 
+
 ConfigureSwagger(app);
 
 app.UseAuthorization();
@@ -31,11 +33,11 @@ app.MapControllers();
 
 app.Run();
 
-static void ApplyMigrations(WebApplication app) {
+static async void ApplyMigrations(WebApplication app) {
 	// automatically apply migrations
 	using var scope = app.Services.CreateScope();
 	var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-	db.Database.MigrateAsync();
+	await db.Database.MigrateAsync();
 }
 
 static void ConfigureSwagger(WebApplication app) {
