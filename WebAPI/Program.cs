@@ -1,5 +1,5 @@
-using Application;
-using Infrastructure;
+using Application.DependencyConfigurations;
+using Infrastructure.DependencyConfigurations;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
