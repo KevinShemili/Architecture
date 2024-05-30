@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.IdentityExtensions
 {
-    public class User : IdentityUser<Guid>
+    public class Role : IdentityRole<Guid>
     {
     }
 }

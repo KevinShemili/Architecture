@@ -33,9 +33,15 @@ namespace Infrastructure.DependencyConfigurations
 
         private static void ConfigureASPIdentity(this IServiceCollection services)
         {
-            services.AddIdentityCore<User>()
+            services.AddIdentity<User, Role>()
                     .AddEntityFrameworkStores<DatabaseContext>()
+                    .AddDefaultTokenProviders()
                     .AddApiEndpoints();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+            });
         }
     }
 }
