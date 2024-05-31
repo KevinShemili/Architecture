@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Controllers.BaseController;
 
 namespace WebAPI.Controllers {
-	[ApiController]
-	[Route("[controller]")]
-	public class WeatherForecastController : ControllerBase {
+	public class WeatherForecastController : MainControllerBase
+    {
 
 	}
 }

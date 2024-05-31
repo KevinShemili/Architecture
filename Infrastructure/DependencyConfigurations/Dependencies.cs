@@ -1,6 +1,8 @@
-﻿using Application.Contracts.Persistence;
+﻿using Application.Contracts.Email;
+using Application.Contracts.Persistence;
 using Domain.Entities.IdentityExtensions;
 using Infrastructure.Persistence;
+using Infrastructure.Services.Email;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +24,7 @@ namespace Infrastructure.DependencyConfigurations
         private static void ConfigureScopedServices(this IServiceCollection services)
         {
             services.AddScoped<ICoreDbContext, CoreDbContext>();
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         private static void ConfigureDatabaseConnection(this IServiceCollection services, IConfiguration configuration)
@@ -40,7 +43,21 @@ namespace Infrastructure.DependencyConfigurations
 
             services.Configure<IdentityOptions>(options =>
             {
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                options.Lockout.MaxFailedAccessAttempts = 8;
+                options.Lockout.AllowedForNewUsers = true;
+
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredUniqueChars = 1;
+
                 options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+
+                options.User.RequireUniqueEmail = true;
             });
         }
     }

@@ -27,7 +27,7 @@ namespace Application.DependencyConfigurations
 
         private static void ConfigureFluentValidation(IServiceCollection services)
         {
-            services.AddValidatorsFromAssemblyContaining<SignUpCommand>()
+            services.AddValidatorsFromAssemblyContaining<RegisterCommand>()
                     .AddFluentValidationAutoValidation()
                     .AddFluentValidationClientsideAdapters();
         }

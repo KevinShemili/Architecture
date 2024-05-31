@@ -12,9 +12,11 @@ Update-Database => {
 			User: sa
 			Password: Pass@word
 
-	Also Update-Database reads from the default appsettings.json cannot 
-	specify to read from appsettings.Docker.json. So connection string should
-	be shared across all appsettings.
+	Also Update-Database reads from the default appsettings.json, since it is
+	executed from the local machine. Hence, the connection string should
+	be placed in appsettings.json.
+
+	https://chatgpt.com/share/e1809db9-2dd2-4a23-9625-de13fb3d43dc
 }
 
 3. Remove Migration
