@@ -39,10 +39,9 @@ namespace Infrastructure.Services.Email
             _username = _config["MailSettings:UserName"] ?? throw new ArgumentNullException("MailSettings:UserName");
         }
 
-        public async Task<bool> SendAsync(EmailData emailData, CancellationToken cancellationToken = default)
+        private async Task<bool> SendAsync(EmailData emailData, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(emailData);
-
             try
             {
                 var mail = new MimeMessage();
@@ -81,14 +80,20 @@ namespace Infrastructure.Services.Email
             }
             catch (Exception)
             {
-                return false;
+                // Log
+                throw;
             }
         }
 
-        public async Task<bool> SendConfirmationEmail(string token, string email, CancellationToken cancellationToken)
+        public async Task SendConfirmationEmailAsync(string token, string email, CancellationToken cancellationToken)
         {
             var body = await BodyTemplates.VerifyEmailBody(GetUrl(), email, token);
-            return true;
+            
+            _ = await SendAsync(new EmailData { 
+                To = email,
+                Subject = "Confirm Your Email",
+                Body = body
+            }, cancellationToken);
         }
 
         private string GetUrl()

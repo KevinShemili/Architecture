@@ -1,17 +1,19 @@
-﻿using System.Diagnostics;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Infrastructure.Services.Email.HTMLTemplates
 {
     public static class BodyTemplates
     {
-        public static async Task<string> VerifyEmailBody(string url, string email, string token, CancellationToken cancellationToken = default)
+        public static async Task<string> VerifyEmailBody(string url, string email, string token, 
+            CancellationToken cancellationToken = default)
         {
-            var temp = Environment.CurrentDirectory;
-            var case1 = Path.GetFullPath(Path.Combine(temp, @"ConfirmEmail.html"));
-            var result =  await File.ReadAllTextAsync(case1);
+            var baseDirectory = AppContext.BaseDirectory;
+            var relativePath = Path.Combine(baseDirectory, "Services", "Email", "HTMLTemplates", "ConfirmEmail.html");
+            var result = await File.ReadAllTextAsync(relativePath, cancellationToken);
 
-            return string.Empty;
+            var body = result.Replace("LINKHERE", $"{url}/api/Authentication?token={token}&email={email}");
+
+            return body;
         }
 
         /*public static async Task<string> ResetPasswordBody(string url, string email, string token)
@@ -24,26 +26,5 @@ namespace Infrastructure.Services.Email.HTMLTemplates
 
             return body;
         }*/
-
-        private static string GetTemplateFilePath(string folderName, string fileName)
-        {
-            var dirPath = Assembly.GetEntryAssembly()?.Location;
-
-            if (dirPath == null)
-            {
-                throw new InvalidOperationException("Unable to determine the directory of the executing assembly.");
-            }
-
-            dirPath = Path.GetDirectoryName(dirPath);
-
-            if (dirPath == null)
-            {
-                throw new InvalidOperationException("Unable to determine the directory of the executing assembly.");
-            }
-
-            var fullPath = Path.Combine(dirPath, folderName, fileName);
-
-            return fullPath;
-        }
     }
 }

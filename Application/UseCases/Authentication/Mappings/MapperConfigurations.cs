@@ -3,11 +3,11 @@ using AutoMapper;
 using Domain.Entities.IdentityExtensions;
 using Microsoft.AspNetCore.Identity.Data;
 
-namespace Application.Mapper.Authentication
+namespace Application.UseCases.Authentication.Mappings
 {
-    public class AuthenticationMapper : Profile
+    public class MapperConfigurations : Profile
     {
-        public AuthenticationMapper()
+        public MapperConfigurations()
         {
             CreateMap<RegisterRequest, RegisterCommand>();
 

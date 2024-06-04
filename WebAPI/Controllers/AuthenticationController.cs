@@ -13,14 +13,8 @@ namespace WebAPI.Controllers
     [AllowAnonymous]
     public class AuthenticationController : MainControllerBase
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
-
-        public AuthenticationController(IMediator mediator,
-                                        IMapper mapper)
+        public AuthenticationController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
-            _mediator = mediator;
-            _mapper = mapper;
         }
 
         [SwaggerOperation(Summary = "Register Account")]
@@ -28,11 +22,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
             var command = _mapper.Map<RegisterCommand>(registerRequest);
-            //_ = await _mediator.Send(command);
+            var result = await _mediator.Send(command);
 
-            await BodyTemplates.VerifyEmailBody("", "", "", default);
+            if (result.IsFailure)
+                return StatusCode(result.Error.Code, result.Error.Message);
 
-            return Ok();
+            return Ok(result.IsSuccess);
         }
 
         [SwaggerOperation(Summary = "Confirm Email")]

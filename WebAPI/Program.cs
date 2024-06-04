@@ -1,9 +1,10 @@
 using Application.DependencyConfigurations;
 using Domain.Entities.IdentityExtensions;
+using FluentValidation.AspNetCore;
 using Infrastructure.DependencyConfigurations;
 using Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,11 +18,17 @@ builder.Configuration
 
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -33,6 +40,8 @@ ConfigureSwagger(app);
 app.UseAuthorization();
 
 app.UseAuthentication();
+
+app.UseExceptionHandler();
 
 app.MapControllers();
 

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\Authentication\Mappings\" />
+    <Folder Include="Mapper\Authentication\" />
     <Folder Include="UseCases\Authentication\Queries\" />
   </ItemGroup>
 

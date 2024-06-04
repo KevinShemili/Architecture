@@ -2,6 +2,6 @@
 {
     public interface IEmailService
     {
-        Task<bool> SendConfirmationEmail(string token, string email, CancellationToken cancellationToken = default);
+        Task SendConfirmationEmailAsync(string token, string email, CancellationToken cancellationToken = default);
     }
 }
