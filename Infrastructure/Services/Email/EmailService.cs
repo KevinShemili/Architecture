@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Email;
+using Application.Services.Transcode;
 using Infrastructure.Services.Email.Body;
 using Infrastructure.Services.Email.HTMLTemplates;
 using MailKit.Net.Smtp;
@@ -87,8 +88,10 @@ namespace Infrastructure.Services.Email
 
         public async Task SendConfirmationEmailAsync(string token, string email, CancellationToken cancellationToken)
         {
-            var body = await BodyTemplates.VerifyEmailBody(GetUrl(), email, token);
-            
+            var encodedToken = Transcode.Encode(token);
+
+            var body = await BodyTemplates.VerifyEmailBody(GetUrl(), email, encodedToken, cancellationToken);
+
             _ = await SendAsync(new EmailData { 
                 To = email,
                 Subject = "Confirm Your Email",
@@ -99,7 +102,8 @@ namespace Infrastructure.Services.Email
         private string GetUrl()
         {
             var url = _httpContext.HttpContext?.Request?.Host.ToString();
-            url = "https://" + url;
+            url = "http://" + url;
+            //url = "https://" + url;
             return url;
         }
     }

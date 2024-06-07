@@ -1,5 +1,7 @@
 ﻿using Application.Behavior.FluentValidation;
+using Application.Contracts.Token;
 using Application.Generic;
+using Application.Services.Token;
 using Application.UseCases.Authentication.Commands;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -40,7 +42,8 @@ namespace Application.DependencyConfigurations
 
         private static void ConfigureScopedServices(IServiceCollection services)
         {
-            services.AddScoped(typeof(BaseHandlerService<>));
+            services.AddScoped<BaseHandlerService>();
+            services.AddScoped<ITokenService, TokenService>();
         }
     }
 }

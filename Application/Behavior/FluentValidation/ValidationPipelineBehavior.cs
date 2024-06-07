@@ -15,7 +15,8 @@ namespace Application.Behavior.FluentValidation
             _validators = validators;
         }
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, 
+            CancellationToken cancellationToken)
         {
             if (!_validators.Any())
                 return await next();
@@ -28,7 +29,7 @@ namespace Application.Behavior.FluentValidation
                 .Where(x => x != null)
                 .ToList();
 
-            if (validationResults.Any())
+            if (validationResults.Count != 0)
             {
                 var errorsDictionary = validationResults
                     .GroupBy(
@@ -40,7 +41,9 @@ namespace Application.Behavior.FluentValidation
                         })
                     .ToDictionary(x => x.Key, x => x.Values);
 
-                var errorMessages = string.Join(" ", errorsDictionary.Select(kv => string.Join(" ", kv.Value.Select(e => e.ErrorMessage))));
+                var errorMessages = string.Join(" ", errorsDictionary.Select(kv => 
+                    string.Join(" ", kv.Value.Select(e => e.ErrorMessage))));
+                
                 throw new ValidationException(errorMessages);
             }
 

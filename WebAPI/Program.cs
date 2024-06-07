@@ -1,12 +1,13 @@
 using Application.DependencyConfigurations;
-using Domain.Entities.IdentityExtensions;
 using FluentValidation.AspNetCore;
 using Infrastructure.DependencyConfigurations;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configuration = builder.Configuration;
 
 builder.Services
 	.AddApplicationLayer(builder.Configuration)
@@ -16,6 +17,8 @@ builder.Configuration
 	.AddJsonFile("appsettings.json")
 	.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
+builder.Services.AddAutoMapper(
+	Assembly.GetExecutingAssembly());
 
 builder.Services.AddControllers();
 
@@ -45,16 +48,16 @@ app.UseExceptionHandler();
 
 app.MapControllers();
 
-app.MapIdentityApi<User>();
-
 app.Run();
 
+#pragma warning disable CS8321 // Local function is declared but never used
 static async void ApplyMigrations(WebApplication app) {
 	// automatically apply migrations
 	using var scope = app.Services.CreateScope();
 	var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 	await db.Database.MigrateAsync();
 }
+#pragma warning restore CS8321 // Local function is declared but never used
 
 static void ConfigureSwagger(WebApplication app) {
 	app.UseSwagger();

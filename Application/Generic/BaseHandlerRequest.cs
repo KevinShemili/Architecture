@@ -9,13 +9,11 @@ namespace Application.Generic {
 
 		protected readonly ICoreDbContext _dbContext;
 		protected readonly IMapper _mapper;
-        protected readonly IValidator<TRequest> _validator;
 
-        protected BaseHandlerRequest(BaseHandlerService<TRequest> service)
+        protected BaseHandlerRequest(BaseHandlerService service)
         {
             _dbContext = service.coreDbContext;
             _mapper = service.mapper;
-            _validator = service.validator;
         }
 
         public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);

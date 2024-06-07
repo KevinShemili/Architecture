@@ -1,19 +1,17 @@
 ﻿using Application.Contracts.Persistence;
 using AutoMapper;
-using FluentValidation;
 
-namespace Application.Generic {
-	public class BaseHandlerService<TRequest> {
+namespace Application.Generic
+{
+    public class BaseHandlerService {
 
 		public readonly ICoreDbContext coreDbContext;
 		public readonly IMapper mapper;
-		public readonly IValidator<TRequest> validator;
 
-        public BaseHandlerService(ICoreDbContext coreDbContext, IMapper mapper, IValidator<TRequest> validator)
+        public BaseHandlerService(ICoreDbContext coreDbContext, IMapper mapper)
         {
             this.coreDbContext = coreDbContext;
             this.mapper = mapper;
-            this.validator = validator;
         }
     }
 }
