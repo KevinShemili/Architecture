@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Persistence;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Generic {
@@ -9,11 +10,12 @@ namespace Application.Generic {
 		protected readonly ICoreDbContext _dbContext;
 		protected readonly IMapper _mapper;
 
-		protected BaseHandlerRequest(BaseHandlerService service) {
-			_dbContext = service.coreDbContext;
-			_mapper = service.mapper;
-		}
+        protected BaseHandlerRequest(BaseHandlerService service)
+        {
+            _dbContext = service.coreDbContext;
+            _mapper = service.mapper;
+        }
 
-		public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
+        public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
 	}
 }

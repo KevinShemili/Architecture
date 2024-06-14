@@ -1,7 +1,9 @@
-﻿using Application.Generic;
+﻿using Application.Behavior.FluentValidation;
+using Application.Contracts.Token;
+using Application.Generic;
 using Application.UseCases.Authentication.Commands;
 using FluentValidation;
-using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -27,9 +29,8 @@ namespace Application.DependencyConfigurations
 
         private static void ConfigureFluentValidation(IServiceCollection services)
         {
-            services.AddValidatorsFromAssemblyContaining<SignUpCommand>()
-                    .AddFluentValidationAutoValidation()
-                    .AddFluentValidationClientsideAdapters();
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+            services.AddValidatorsFromAssemblyContaining<RegisterCommand>(includeInternalTypes: true);
         }
 
         private static void ConfigureAutoMapper(IServiceCollection services)

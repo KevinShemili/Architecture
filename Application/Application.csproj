@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\Authentication\Mappings\" />
+    <Folder Include="Behavior\ResultPattern\ErrorModels\FluentValidation\" />
     <Folder Include="UseCases\Authentication\Queries\" />
   </ItemGroup>
 
