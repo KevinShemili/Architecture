@@ -1,7 +1,9 @@
 ﻿using Application.Contracts.Email;
 using Application.Contracts.Persistence;
+using Application.Contracts.Token;
 using Infrastructure.Persistence;
 using Infrastructure.Services.Email;
+using Infrastructure.Services.Token;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,13 +25,15 @@ namespace Infrastructure.DependencyConfigurations
         {
             services.AddScoped<ICoreDbContext, CoreDbContext>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ITokenService, TokenService>();
         }
 
-        private static void ConfigureDatabaseConnection(this IServiceCollection services, IConfiguration configuration)
+        private static void ConfigureDatabaseConnection(this IServiceCollection services, 
+            IConfiguration configuration)
         {
             var connString = configuration.GetConnectionString("DbConnection");
 
-            services.AddDbContext<DatabaseContext>(options =>
+            services.AddDbContext<DatabaseContext>(options => 
                 options.UseSqlServer(connString, b => b.MigrationsAssembly("Infrastructure")));
         }
     }

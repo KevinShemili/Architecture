@@ -5,13 +5,13 @@ namespace Application.Services.Transcode
 {
     public static class Transcode
     {
-        public static string Encode(string content)
+        public static string EncodeURL(string content)
         {
             return WebEncoders.Base64UrlEncode(
                 Encoding.UTF8.GetBytes(content));
         }
 
-        public static string Decode(string content)
+        public static string DecodeURL(string content)
         {
             return Encoding.UTF8.GetString(
                 WebEncoders.Base64UrlDecode(content));

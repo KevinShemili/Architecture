@@ -2,6 +2,8 @@
 {
     public interface ITokenService
     {
-        //Task<Tuple<string, DateTime>> GenerateJWT();
+        Task<JWTTokenModel> GenerateJWTAsync(string email, CancellationToken cancellationToken);
+        RefreshTokenModel GenerateRefreshToken();
+        string GenerateEmailVerificationToken();
     }
 }

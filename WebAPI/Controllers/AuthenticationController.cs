@@ -20,12 +20,12 @@ namespace WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
-            /*var command = _mapper.Map<RegisterCommand>(registerDTO);
+            var command = _mapper.Map<RegisterCommand>(registerDTO);
             var result = await _mediator.Send(command);
 
             if (result.IsFailure)
                 return StatusCode(result.Error.Code, result.Error.Message);
-            */
+            
             return Ok();
         }
 
@@ -33,13 +33,13 @@ namespace WebAPI.Controllers
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
         {
-            /*var command = _mapper.Map<SignInCommand>(signInDTO);
+            var command = _mapper.Map<SignInCommand>(signInDTO);
             var result = await _mediator.Send(command);
 
-            if (result.IsFailure)
+            /*if (result.IsFailure)
                 return StatusCode(result.Error.Code, result.Error.Message);
             */
-            return Ok();
+            return Ok(result);
         }
 
         // [FromQuery] is always a GET request.
@@ -47,14 +47,14 @@ namespace WebAPI.Controllers
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string token, [FromQuery] string email)
         {           
-            /*var result = await _mediator.Send(new ConfirmEmailCommand { 
+            var result = await _mediator.Send(new ConfirmEmailCommand { 
                 Email = email,
                 Token = token
             });
 
             if (result.IsFailure) 
                 return StatusCode(result.Error.Code, result.Error.Message);
-            */
+            
             return Ok();
         }
     }

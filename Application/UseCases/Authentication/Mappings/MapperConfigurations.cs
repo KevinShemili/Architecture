@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Application.UseCases.Authentication.Commands;
+using AutoMapper;
+using Domain.Entities;
 
 namespace Application.UseCases.Authentication.Mappings
 {
@@ -6,6 +8,7 @@ namespace Application.UseCases.Authentication.Mappings
     {
         public MapperConfigurations()
         {
+            CreateMap<RegisterCommand, User>();
         }
     }
 }

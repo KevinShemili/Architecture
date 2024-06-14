@@ -12,7 +12,7 @@ namespace Infrastructure.Persistence {
 			_databaseContext = databaseContext;
 		}
 
-		public async Task<EntityEntry<TEntity>> CreateAsync<TEntity>(TEntity entity, bool commitChanges = true, 
+		public async Task<EntityEntry<TEntity>> CreateAsync<TEntity>(TEntity entity, bool commitChanges = false, 
 			CancellationToken cancellationToken = default) where TEntity : EntityBase {
 
 			ArgumentNullException.ThrowIfNull(entity);
@@ -30,7 +30,7 @@ namespace Infrastructure.Persistence {
 			return createdEntity;
 		}
 
-		public async Task<bool> DeleteAsync<TEntity>(TEntity entity, bool commitChanges = true, 
+		public async Task<bool> DeleteAsync<TEntity>(TEntity entity, bool commitChanges = false, 
 			CancellationToken cancellationToken = default) where TEntity : EntityBase {
 
 			ArgumentNullException.ThrowIfNull(entity);
@@ -44,7 +44,7 @@ namespace Infrastructure.Persistence {
 			return _databaseContext.Set<T>();
 		}
 
-		public async Task HardDeleteAsync<TEntity>(TEntity entity, bool commitChanges = true, 
+		public async Task HardDeleteAsync<TEntity>(TEntity entity, bool commitChanges = false, 
 			CancellationToken cancellationToken = default) where TEntity : EntityBase {
 
 			ArgumentNullException.ThrowIfNull(entity);
@@ -77,7 +77,7 @@ namespace Infrastructure.Persistence {
 			return EntityAsDbSet<TEntity>().AsNoTracking();
 		}
 
-		public async Task<TEntity> Update<TEntity>(TEntity entity, bool commitChanges = true, 
+		public async Task<TEntity> Update<TEntity>(TEntity entity, bool commitChanges = false, 
 			CancellationToken cancellationToken = default) where TEntity : EntityBase {
 
 			ArgumentNullException.ThrowIfNull(entity);

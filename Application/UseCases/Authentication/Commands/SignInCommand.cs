@@ -1,18 +1,20 @@
 ﻿using Application.Behavior.ResultPattern;
 using Application.Contracts.Token;
 using Application.Generic;
+using Domain.Entities;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.UseCases.Authentication.Commands
 {
-    public class SignInCommand : IRequest<Result<SignInCommandResult>>
+    public class SignInCommand : IRequest<List<User>>
     {
         public required string Email { get; set; }
         public required string Password { get; set; }
     }
 
-    public class SignInCommandHandler : BaseHandlerRequest<SignInCommand, Result<SignInCommandResult>>
+    public class SignInCommandHandler : BaseHandlerRequest<SignInCommand, List<User>>
     {
         private readonly ITokenService _tokenService;
 
@@ -22,10 +24,12 @@ namespace Application.UseCases.Authentication.Commands
             _tokenService = tokenService;
         }
 
-        public async override Task<Result<SignInCommandResult>> Handle(SignInCommand request, CancellationToken cancellationToken)
+        public async override Task<List<User>> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            return Result<SignInCommandResult>
-                .Success(new SignInCommandResult {} );
+            var result1 = await _dbContext.EntityAsDbSet<User>().ToListAsync(cancellationToken);
+            var result2 = await _dbContext.EntityAsDbSet<User>().IgnoreQueryFilters().ToListAsync(cancellationToken: cancellationToken);
+
+            return result1;
         }
     }
 

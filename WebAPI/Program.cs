@@ -20,6 +20,8 @@ builder.Configuration
 builder.Services.AddAutoMapper(
 	Assembly.GetExecutingAssembly());
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllers();
 
 builder.Services.AddFluentValidationAutoValidation();

@@ -14,15 +14,15 @@ namespace Infrastructure.Services.Email
     {
         private readonly IConfiguration _config;
         private readonly IHttpContextAccessor _httpContext;
-
-        private readonly string _displayName;
-        private readonly string _from;
-        private readonly bool _useSSL;
-        private readonly bool _useStartTls;
-        private readonly string _host;
-        private readonly int _port;
-        private readonly string _password;
-        private readonly string _username;
+        
+        private int _port;
+        private bool _useSSL;
+        private bool _useStartTls;
+        private string _displayName = null!;
+        private string _from = null!;
+        private string _host = null!;
+        private string _password = null!;
+        private string _username = null!;
 
         public EmailService(IConfiguration config,
                             IHttpContextAccessor httpContext)
@@ -30,14 +30,18 @@ namespace Infrastructure.Services.Email
             _config = config;
             _httpContext = httpContext;
 
-            _displayName = _config["MailSettings:DisplayName"] ?? throw new ArgumentNullException("MailSettings:DisplayName");
-            _from = _config["MailSettings:From"] ?? throw new ArgumentNullException("MailSettings:From");
-            _useSSL = bool.TryParse(_config["MailSettings:UseSSL"], out var useSSL) && useSSL;
-            _useStartTls = bool.TryParse(_config["MailSettings:UseStartTls"], out var useStartTls) && useStartTls;
-            _host = _config["MailSettings:Host"] ?? throw new ArgumentNullException("MailSettings:Host");
-            _port = int.TryParse(_config["MailSettings:Port"], out var port) ? port : throw new ArgumentNullException("MailSettings:Port");
-            _password = _config["MailSettings:Password"] ?? throw new ArgumentNullException("MailSettings:Password");
-            _username = _config["MailSettings:UserName"] ?? throw new ArgumentNullException("MailSettings:UserName");
+            ReadAppSettings();
+        }
+
+        private void ReadAppSettings() {
+            _displayName = _config["MailSettings:DisplayName"]!;
+            _from = _config["MailSettings:From"]!;
+            _useSSL = bool.Parse(_config["MailSettings:UseSSL"]!);
+            _useStartTls = bool.Parse(_config["MailSettings:UseStartTls"]!);
+            _host = _config["MailSettings:Host"]!;
+            _port = int.Parse(_config["MailSettings:Port"]!);
+            _password = _config["MailSettings:Password"]!;
+            _username = _config["MailSettings:UserName"]!;
         }
 
         private async Task<bool> SendAsync(EmailData emailData, CancellationToken cancellationToken = default)
@@ -88,7 +92,7 @@ namespace Infrastructure.Services.Email
 
         public async Task SendConfirmationEmailAsync(string token, string email, CancellationToken cancellationToken)
         {
-            var encodedToken = Transcode.Encode(token);
+            var encodedToken = Transcode.EncodeURL(token);
 
             var body = await BodyTemplates.VerifyEmailBody(GetUrl(), email, encodedToken, cancellationToken);
 
@@ -102,8 +106,13 @@ namespace Infrastructure.Services.Email
         private string GetUrl()
         {
             var url = _httpContext.HttpContext?.Request?.Host.ToString();
-            url = "http://" + url;
-            //url = "https://" + url;
+            var isHttps = _httpContext.HttpContext?.Request.IsHttps;
+            
+            if (isHttps.HasValue && isHttps is true)
+                url = "https://" + url;
+            else
+                url = "http://" + url;
+
             return url;
         }
     }
