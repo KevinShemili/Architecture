@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240614133608_InitialMigration")]
+    [Migration("20240618135050_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -134,7 +134,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8027),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 48, 865, DateTimeKind.Utc).AddTicks(2773),
                             IsDeleted = false,
                             Key = "role.assign",
                             Name = "Assign role to user."
@@ -142,7 +142,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(7540),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 48, 865, DateTimeKind.Utc).AddTicks(2027),
                             IsDeleted = false,
                             Key = "permission.assign",
                             Name = "Assign permission to role."
@@ -150,7 +150,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8029),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 48, 865, DateTimeKind.Utc).AddTicks(2775),
                             IsDeleted = false,
                             Key = "role.create",
                             Name = "Create new role."
@@ -158,7 +158,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8030),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 48, 865, DateTimeKind.Utc).AddTicks(2777),
                             IsDeleted = false,
                             Key = "user.create",
                             Name = "Create new user."
@@ -173,6 +173,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AccessToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -184,9 +187,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("JWTToken")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
@@ -238,14 +238,14 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 7, 121, DateTimeKind.Utc).AddTicks(9952),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 48, 869, DateTimeKind.Utc).AddTicks(5932),
                             IsDeleted = false,
                             Name = "administrator"
                         },
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 7, 121, DateTimeKind.Utc).AddTicks(9955),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 48, 869, DateTimeKind.Utc).AddTicks(5936),
                             IsDeleted = false,
                             Name = "user"
                         });
@@ -296,7 +296,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AssignedByName = "system",
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2141),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 49, 664, DateTimeKind.Utc).AddTicks(5809),
                             IsDeleted = false,
                             PermissionId = 2,
                             RoleId = 1
@@ -305,7 +305,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             AssignedByName = "system",
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2170),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 49, 664, DateTimeKind.Utc).AddTicks(5850),
                             IsDeleted = false,
                             PermissionId = 1,
                             RoleId = 1
@@ -314,7 +314,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 3,
                             AssignedByName = "system",
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2175),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 49, 664, DateTimeKind.Utc).AddTicks(5856),
                             IsDeleted = false,
                             PermissionId = 3,
                             RoleId = 1
@@ -323,7 +323,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 4,
                             AssignedByName = "system",
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2179),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 49, 664, DateTimeKind.Utc).AddTicks(5861),
                             IsDeleted = false,
                             PermissionId = 4,
                             RoleId = 1
@@ -379,14 +379,14 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 7, 851, DateTimeKind.Utc).AddTicks(6459),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 49, 242, DateTimeKind.Utc).AddTicks(7854),
                             Email = "admin@mail.com",
                             FailedLoginTries = 0,
                             IsBlocked = false,
                             IsDeleted = false,
                             IsEmailVerified = true,
-                            PasswordHash = "03AF79A94C7D5DC2BB2A8B0953E7F7E0197BA6C4E11028DF3E7120F1DC06E5725C89CABAD188515B121514F3A3A99F785E072C6A8F77A338479392A02C9002FC",
-                            PasswordSalt = "94F8B3705B18492B64B111C9B67D0B598C66ACCB9BAC2F50C3B5DCC11720BE2940ECA715F1DF209A852D0324F23152CA480095449838ECA96773311A2DC68184",
+                            PasswordHash = "E71F8A8FC87615CEADF0EB8D483E2A3D61D003DB10FF6FE6808B6A87A6529D124CD007C12B3C256073C65EB36B0EBC9973A35F53D7CF9D0B3A131AD6C720D4F5",
+                            PasswordSalt = "2E28FB8379AFFCBFEF6392426D5EBB95D91E69F3471A0228EAE205E5E510A59637D94B3E8C7DF5C0AA3D64DDA8AEB41C55100F838CF4437EE5F1781C35FA0CCD",
                             UserName = "admin"
                         });
                 });
@@ -436,7 +436,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             AssignedByName = "system",
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 8, 196, DateTimeKind.Utc).AddTicks(4028),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 49, 666, DateTimeKind.Utc).AddTicks(876),
                             IsDeleted = false,
                             RoleId = 1,
                             UserId = 1
@@ -445,7 +445,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             AssignedByName = "system",
-                            DateCreated = new DateTime(2024, 6, 14, 13, 36, 8, 196, DateTimeKind.Utc).AddTicks(4054),
+                            DateCreated = new DateTime(2024, 6, 18, 13, 50, 49, 666, DateTimeKind.Utc).AddTicks(914),
                             IsDeleted = false,
                             RoleId = 2,
                             UserId = 1

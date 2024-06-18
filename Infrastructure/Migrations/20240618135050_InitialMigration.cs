@@ -157,7 +157,7 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Expiry = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    JWTToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -210,10 +210,10 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "Description", "IsDeleted", "Key", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(7540), null, null, false, "permission.assign", "Assign permission to role." },
-                    { 2, new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8027), null, null, false, "role.assign", "Assign role to user." },
-                    { 3, new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8029), null, null, false, "role.create", "Create new role." },
-                    { 4, new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8030), null, null, false, "user.create", "Create new user." }
+                    { 1, new DateTime(2024, 6, 18, 13, 50, 48, 865, DateTimeKind.Utc).AddTicks(2027), null, null, false, "permission.assign", "Assign permission to role." },
+                    { 2, new DateTime(2024, 6, 18, 13, 50, 48, 865, DateTimeKind.Utc).AddTicks(2773), null, null, false, "role.assign", "Assign role to user." },
+                    { 3, new DateTime(2024, 6, 18, 13, 50, 48, 865, DateTimeKind.Utc).AddTicks(2775), null, null, false, "role.create", "Create new role." },
+                    { 4, new DateTime(2024, 6, 18, 13, 50, 48, 865, DateTimeKind.Utc).AddTicks(2777), null, null, false, "user.create", "Create new user." }
                 });
 
             migrationBuilder.InsertData(
@@ -221,24 +221,24 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "Description", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 6, 14, 13, 36, 7, 121, DateTimeKind.Utc).AddTicks(9952), null, null, false, "administrator" },
-                    { 2, new DateTime(2024, 6, 14, 13, 36, 7, 121, DateTimeKind.Utc).AddTicks(9955), null, null, false, "user" }
+                    { 1, new DateTime(2024, 6, 18, 13, 50, 48, 869, DateTimeKind.Utc).AddTicks(5932), null, null, false, "administrator" },
+                    { 2, new DateTime(2024, 6, 18, 13, 50, 48, 869, DateTimeKind.Utc).AddTicks(5936), null, null, false, "user" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "Email", "FailedLoginTries", "IsBlocked", "IsDeleted", "IsEmailVerified", "PasswordHash", "PasswordSalt", "UserName" },
-                values: new object[] { 1, new DateTime(2024, 6, 14, 13, 36, 7, 851, DateTimeKind.Utc).AddTicks(6459), null, "admin@mail.com", 0, false, false, true, "03AF79A94C7D5DC2BB2A8B0953E7F7E0197BA6C4E11028DF3E7120F1DC06E5725C89CABAD188515B121514F3A3A99F785E072C6A8F77A338479392A02C9002FC", "94F8B3705B18492B64B111C9B67D0B598C66ACCB9BAC2F50C3B5DCC11720BE2940ECA715F1DF209A852D0324F23152CA480095449838ECA96773311A2DC68184", "admin" });
+                values: new object[] { 1, new DateTime(2024, 6, 18, 13, 50, 49, 242, DateTimeKind.Utc).AddTicks(7854), null, "admin@mail.com", 0, false, false, true, "E71F8A8FC87615CEADF0EB8D483E2A3D61D003DB10FF6FE6808B6A87A6529D124CD007C12B3C256073C65EB36B0EBC9973A35F53D7CF9D0B3A131AD6C720D4F5", "2E28FB8379AFFCBFEF6392426D5EBB95D91E69F3471A0228EAE205E5E510A59637D94B3E8C7DF5C0AA3D64DDA8AEB41C55100F838CF4437EE5F1781C35FA0CCD", "admin" });
 
             migrationBuilder.InsertData(
                 table: "RolePermissions",
                 columns: new[] { "Id", "AssignedBy", "AssignedByName", "DateCreated", "DateUpdated", "IsDeleted", "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2141), null, false, 2, 1 },
-                    { 2, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2170), null, false, 1, 1 },
-                    { 3, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2175), null, false, 3, 1 },
-                    { 4, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2179), null, false, 4, 1 }
+                    { 1, null, "system", new DateTime(2024, 6, 18, 13, 50, 49, 664, DateTimeKind.Utc).AddTicks(5809), null, false, 2, 1 },
+                    { 2, null, "system", new DateTime(2024, 6, 18, 13, 50, 49, 664, DateTimeKind.Utc).AddTicks(5850), null, false, 1, 1 },
+                    { 3, null, "system", new DateTime(2024, 6, 18, 13, 50, 49, 664, DateTimeKind.Utc).AddTicks(5856), null, false, 3, 1 },
+                    { 4, null, "system", new DateTime(2024, 6, 18, 13, 50, 49, 664, DateTimeKind.Utc).AddTicks(5861), null, false, 4, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -246,8 +246,8 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "AssignedBy", "AssignedByName", "DateCreated", "DateUpdated", "IsDeleted", "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 196, DateTimeKind.Utc).AddTicks(4028), null, false, 1, 1 },
-                    { 2, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 196, DateTimeKind.Utc).AddTicks(4054), null, false, 2, 1 }
+                    { 1, null, "system", new DateTime(2024, 6, 18, 13, 50, 49, 666, DateTimeKind.Utc).AddTicks(876), null, false, 1, 1 },
+                    { 2, null, "system", new DateTime(2024, 6, 18, 13, 50, 49, 666, DateTimeKind.Utc).AddTicks(914), null, false, 2, 1 }
                 });
 
             migrationBuilder.CreateIndex(
