@@ -9,6 +9,7 @@ namespace WebAPI.DataTransferObjects.Authentication
         {
             CreateMap<RegisterDTO, RegisterCommand>();
             CreateMap<SignInDTO, SignInCommand>();
+            CreateMap<TokensDTO, RefreshTokenCommand>();
         }
     }
 }

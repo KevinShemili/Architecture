@@ -6,7 +6,7 @@ namespace Domain.Entities
     {
         public string Token { get; set; }
         public DateTime Expiry {  get; set; }
-        public Guid JwtTokenId { get; set; }        
+        public string AccessToken { get; set; }        
         public int UserId { get; set; }
 
         public virtual User User { get; set; }

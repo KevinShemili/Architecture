@@ -157,7 +157,7 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Expiry = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    JwtTokenId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    JWTToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -210,10 +210,10 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "Description", "IsDeleted", "Key", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, false, "permission.assign", "Assign permission to role." },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, false, "role.assign", "Assign role to user." },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, false, "role.create", "Create new role." },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, false, "user.create", "Create new user." }
+                    { 1, new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(7540), null, null, false, "permission.assign", "Assign permission to role." },
+                    { 2, new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8027), null, null, false, "role.assign", "Assign role to user." },
+                    { 3, new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8029), null, null, false, "role.create", "Create new role." },
+                    { 4, new DateTime(2024, 6, 14, 13, 36, 7, 118, DateTimeKind.Utc).AddTicks(8030), null, null, false, "user.create", "Create new user." }
                 });
 
             migrationBuilder.InsertData(
@@ -221,24 +221,24 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "Description", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, false, "administrator" },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, false, "basic-user" }
+                    { 1, new DateTime(2024, 6, 14, 13, 36, 7, 121, DateTimeKind.Utc).AddTicks(9952), null, null, false, "administrator" },
+                    { 2, new DateTime(2024, 6, 14, 13, 36, 7, 121, DateTimeKind.Utc).AddTicks(9955), null, null, false, "user" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "DateCreated", "DateUpdated", "Email", "FailedLoginTries", "IsBlocked", "IsDeleted", "IsEmailVerified", "PasswordHash", "PasswordSalt", "UserName" },
-                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "admin@mail.com", 0, false, false, true, "C6ACB58C6866AC5B98B42BC4C36CE485605F79129250D11971B6AB042A641163D2943B4E659D7DB61A3E8D17F59A68A7E9730E96E558901F205CB95893F1BB2B", "System.Byte[]", "admin" });
+                values: new object[] { 1, new DateTime(2024, 6, 14, 13, 36, 7, 851, DateTimeKind.Utc).AddTicks(6459), null, "admin@mail.com", 0, false, false, true, "03AF79A94C7D5DC2BB2A8B0953E7F7E0197BA6C4E11028DF3E7120F1DC06E5725C89CABAD188515B121514F3A3A99F785E072C6A8F77A338479392A02C9002FC", "94F8B3705B18492B64B111C9B67D0B598C66ACCB9BAC2F50C3B5DCC11720BE2940ECA715F1DF209A852D0324F23152CA480095449838ECA96773311A2DC68184", "admin" });
 
             migrationBuilder.InsertData(
                 table: "RolePermissions",
                 columns: new[] { "Id", "AssignedBy", "AssignedByName", "DateCreated", "DateUpdated", "IsDeleted", "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, null, "system", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, 2, 1 },
-                    { 2, null, "system", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, 1, 1 },
-                    { 3, null, "system", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, 3, 1 },
-                    { 4, null, "system", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, 4, 1 }
+                    { 1, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2141), null, false, 2, 1 },
+                    { 2, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2170), null, false, 1, 1 },
+                    { 3, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2175), null, false, 3, 1 },
+                    { 4, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 195, DateTimeKind.Utc).AddTicks(2179), null, false, 4, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -246,9 +246,15 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "AssignedBy", "AssignedByName", "DateCreated", "DateUpdated", "IsDeleted", "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, "system", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, 1, 1 },
-                    { 2, null, "system", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, 2, 1 }
+                    { 1, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 196, DateTimeKind.Utc).AddTicks(4028), null, false, 1, 1 },
+                    { 2, null, "system", new DateTime(2024, 6, 14, 13, 36, 8, 196, DateTimeKind.Utc).AddTicks(4054), null, false, 2, 1 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailTokens_IsDeleted",
+                table: "EmailTokens",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailTokens_UserId",
@@ -256,14 +262,38 @@ namespace Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PasswordTokens_IsDeleted",
+                table: "PasswordTokens",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PasswordTokens_UserId",
                 table: "PasswordTokens",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Permissions_IsDeleted",
+                table: "Permissions",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_IsDeleted",
+                table: "RefreshTokens",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
                 table: "RefreshTokens",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RolePermissions_IsDeleted",
+                table: "RolePermissions",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RolePermissions_PermissionId",
@@ -276,6 +306,18 @@ namespace Infrastructure.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_IsDeleted",
+                table: "Roles",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_IsDeleted",
+                table: "UserRoles",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
@@ -284,6 +326,12 @@ namespace Infrastructure.Migrations
                 name: "IX_UserRoles_UserId",
                 table: "UserRoles",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_IsDeleted",
+                table: "Users",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
         }
 
         /// <inheritdoc />

@@ -6,13 +6,14 @@ namespace Infrastructure.EntityConfigurations.SeedData
     public class Users
     {
         public static readonly User Administrator = new User
-        {
+        {            
             Id = 1,
             UserName = "admin",
             Email = "admin@mail.com",
             IsEmailVerified = true,
-            PasswordHash = Hasher.HashPasword("admin").Item1,
-            PasswordSalt = Hasher.HashPasword("admin").Item2,
+            PasswordHash = Hasher.AdminHash,
+            PasswordSalt = Hasher.AdminSalt,
+            DateCreated = DateTime.UtcNow
         };
 
         public static readonly List<User> SeedUsers =

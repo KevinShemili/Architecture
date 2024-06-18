@@ -29,12 +29,20 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(config =>
 {
+    config.EnableAnnotations();
+
+    config.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Architecture",
+        Version = "v1"
+    });
+
     config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
+        In = ParameterLocation.Header,
         Description = "JWT Authorization",
         Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
         Scheme = "bearer",
         BearerFormat = "JWT"
     });
@@ -89,10 +97,16 @@ var app = builder.Build();
 
 ConfigureSwagger(app);
 
-app.UseAuthorization();
+app.UseRouting();
+
 app.UseAuthentication();
+
+app.UseAuthorization();
+
 app.UseExceptionHandler();
+
 app.MapControllers();
+
 app.Run();
 
 #pragma warning disable CS8321 // Local function is declared but never used

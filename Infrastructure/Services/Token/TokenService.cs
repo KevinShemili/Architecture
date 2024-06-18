@@ -22,7 +22,7 @@ namespace Infrastructure.Services.Token
             _coreDbContext = coreDbContext;
         }
 
-        public async Task<JWTTokenModel> GenerateJWTAsync(string email, CancellationToken cancellationToken)
+        public async Task<string> GenerateAccessTokenAsync(string email, CancellationToken cancellationToken)
         {
             var user = await _coreDbContext.TableNoTracking<User>()
                                            .Include(x => x.Roles)
@@ -46,7 +46,7 @@ namespace Infrastructure.Services.Token
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration["JWTSettings:Secret"]!));
-            
+
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var tokenExpiry = DateTime.UtcNow.AddHours(
@@ -60,25 +60,67 @@ namespace Infrastructure.Services.Token
                 signingCredentials: creds
             );
 
-            return new JWTTokenModel
-            {
-                JWTToken = new JwtSecurityTokenHandler().WriteToken(token),
-                Expiry = tokenExpiry
-            };
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public RefreshTokenModel GenerateRefreshToken()
+        public string GenerateAccessToken(IEnumerable<Claim> claims)
         {
-            return new RefreshTokenModel {
-                RefreshToken = Guid.NewGuid().ToString(),
-                Expiry = DateTime.UtcNow.AddHours(
-                    Convert.ToDouble(_configuration["JWTSettings:Issuer"]))
-            };
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration["JWTSettings:Secret"]!));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var tokenExpiry = DateTime.UtcNow.AddHours(
+                    Convert.ToDouble(_configuration["JWTSettings:ExpiryHour"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWTSettings:Issuer"],
+                audience: _configuration["JWTSettings:Audience"],
+                claims: claims,
+                expires: tokenExpiry,
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public (string, DateTime) GenerateRefreshToken()
+        {
+            return (
+                Guid.NewGuid().ToString(),
+                DateTime.UtcNow.AddHours(
+                    Convert.ToDouble(_configuration["RefreshTokenSettings:ExpiryDays"]))
+                );
         }
 
         public string GenerateEmailVerificationToken()
         {
             return Guid.NewGuid().ToString();
+        }
+
+        public ClaimsPrincipal GetClaims(string accessToken)
+        {
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _configuration["JWTSettings:Issuer"],
+                ValidAudience = _configuration["JWTSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWTSettings:Secret"]!)),
+                ClockSkew = TimeSpan.Zero,
+                RequireExpirationTime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(accessToken, validationParameters, out SecurityToken securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
         }
     }
 }

@@ -33,8 +33,10 @@ namespace Infrastructure.EntityConfigurations
                     Id = id,
                     UserId = Users.Administrator.Id,
                     RoleId = role.Id,
-                    AssignedByName = "system"
+                    AssignedByName = "system",
+                    DateCreated = DateTime.UtcNow
                 });
+
                 id++;
             }
         }

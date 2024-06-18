@@ -42,7 +42,7 @@ namespace Application.UseCases.Authentication.Commands
                                        .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
             if (user is null)
-                return Result<bool>.Failure(AuthenticationErrors.InvalidEmailToken);
+                return Result<bool>.Failure(AuthenticationErrors.InvalidToken);
 
             if (user.IsEmailVerified is true)
                 return Result<bool>.Failure(AuthenticationErrors.AccountAlreadyVerified);
@@ -52,7 +52,7 @@ namespace Application.UseCases.Authentication.Commands
             var token = user.EmailTokens.FirstOrDefault(x => x.Token == decodedToken);
 
             if (token is null)
-                return Result<bool>.Failure(AuthenticationErrors.InvalidEmailToken);
+                return Result<bool>.Failure(AuthenticationErrors.InvalidToken);
 
             if (DateTime.UtcNow > token.Expiry)
             {
