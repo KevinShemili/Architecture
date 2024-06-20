@@ -52,4 +52,12 @@ namespace Infrastructure.EntityConfigurations.SeedData
             CreateUser
         ];
     }
+
+    public static class PermissionKeys
+    {
+        public const string AssignPermission = "permission.assign";
+        public const string AssignRole = "role.assign";
+        public const string CreateRole = "role.create";
+        public const string CreateUser = "user.create";
+    }
 }

@@ -88,5 +88,12 @@ namespace WebAPI.Controllers
 
             return Ok(result.Value);
         }
+
+        /*[Authorize(Policy = PermissionKeys.AssignPermission)]
+        [HttpPut("clickme")]
+        public IActionResult ClickMe()
+        {
+            return Ok();
+        }*/
     }
 }
