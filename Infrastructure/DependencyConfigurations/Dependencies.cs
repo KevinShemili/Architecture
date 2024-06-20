@@ -1,9 +1,11 @@
 ﻿using Application.Contracts.Email;
 using Application.Contracts.Persistence;
 using Application.Contracts.Token;
+using Infrastructure.Authorization;
 using Infrastructure.Persistence;
 using Infrastructure.Services.Email;
 using Infrastructure.Services.Token;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,7 @@ namespace Infrastructure.DependencyConfigurations
         {
             services.ConfigureScopedServices();
             services.ConfigureDatabaseConnection(configuration);
+            services.ConfigureAuthorizationPolicy();
 
             return services;
         }
@@ -35,6 +38,12 @@ namespace Infrastructure.DependencyConfigurations
 
             services.AddDbContext<DatabaseContext>(options => 
                 options.UseSqlServer(connString, b => b.MigrationsAssembly("Infrastructure")));
+        }
+
+        private static void ConfigureAuthorizationPolicy(this IServiceCollection services)
+        {
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
         }
     }
 }

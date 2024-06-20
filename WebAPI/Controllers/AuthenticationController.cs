@@ -9,13 +9,13 @@ using WebAPI.DataTransferObjects.Authentication;
 
 namespace WebAPI.Controllers
 {
-    [AllowAnonymous]
     public class AuthenticationController : MainControllerBase
     {
-        public AuthenticationController(IMediator mediator, IMapper mapper) : 
+        public AuthenticationController(IMediator mediator, IMapper mapper) :
             base(mediator, mapper)
         { }
 
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Register Account")]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
@@ -25,10 +25,11 @@ namespace WebAPI.Controllers
 
             if (result.IsFailure)
                 return StatusCode(result.Error.Code, result.Error.Message);
-            
-            return Ok();
+
+            return Ok(result.Value);
         }
 
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Sign In")]
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
@@ -36,26 +37,63 @@ namespace WebAPI.Controllers
             var command = _mapper.Map<SignInCommand>(signInDTO);
             var result = await _mediator.Send(command);
 
-            /*if (result.IsFailure)
+            if (result.IsFailure)
                 return StatusCode(result.Error.Code, result.Error.Message);
-            */
-            return Ok(result);
+
+            return Ok(result.Value);
+        }
+
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "Refresh Token")]
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] TokensDTO tokensDTO)
+        {
+            var command = _mapper.Map<RefreshTokenCommand>(tokensDTO);
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return StatusCode(result.Error.Code, result.Error.Message);
+
+            return Ok(result.Value);
+        }
+
+        [Authorize]
+        [SwaggerOperation(Summary = "Revoke Refresh Token")]
+        [HttpPost("revoke-refresh")]
+        public async Task<IActionResult> RevokeRefreshToken(int userId)
+        {
+            var command = new RevokeRefreshTokenCommand { UserId = userId };
+            var result = await _mediator.Send(command);
+
+            if (result.IsFailure)
+                return StatusCode(result.Error.Code, result.Error.Message);
+
+            return Ok(result.Value);
         }
 
         // [FromQuery] is always a GET request.
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Confirm Email")]
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string token, [FromQuery] string email)
-        {           
-            var result = await _mediator.Send(new ConfirmEmailCommand { 
+        {
+            var result = await _mediator.Send(new ConfirmEmailCommand
+            {
                 Email = email,
                 Token = token
             });
 
-            if (result.IsFailure) 
+            if (result.IsFailure)
                 return StatusCode(result.Error.Code, result.Error.Message);
-            
-            return Ok();
+
+            return Ok(result.Value);
         }
+
+        /*[Authorize(Policy = PermissionKeys.AssignPermission)]
+        [HttpPut("clickme")]
+        public IActionResult ClickMe()
+        {
+            return Ok();
+        }*/
     }
 }

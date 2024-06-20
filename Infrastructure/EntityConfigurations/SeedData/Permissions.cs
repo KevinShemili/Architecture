@@ -9,6 +9,7 @@ namespace Infrastructure.EntityConfigurations.SeedData
             Id = 1,
             Key = "permission.assign",
             Name = "Assign permission to role.",
+            DateCreated = DateTime.UtcNow
         };
 
         public static readonly Permission AssignRole = new Permission
@@ -16,6 +17,7 @@ namespace Infrastructure.EntityConfigurations.SeedData
             Id = 2,
             Key = "role.assign",
             Name = "Assign role to user.",
+            DateCreated = DateTime.UtcNow
         };
 
         public static readonly Permission CreateRole = new Permission
@@ -23,6 +25,7 @@ namespace Infrastructure.EntityConfigurations.SeedData
             Id = 3,
             Key = "role.create",
             Name = "Create new role.",
+            DateCreated = DateTime.UtcNow
         };
 
         public static readonly Permission CreateUser = new Permission
@@ -30,6 +33,7 @@ namespace Infrastructure.EntityConfigurations.SeedData
             Id = 4,
             Key = "user.create",
             Name = "Create new user.",
+            DateCreated = DateTime.UtcNow
         };
 
         public static readonly List<Permission> SeedAdminPermissions =
@@ -47,5 +51,13 @@ namespace Infrastructure.EntityConfigurations.SeedData
             CreateRole,
             CreateUser
         ];
+    }
+
+    public static class PermissionKeys
+    {
+        public const string AssignPermission = "permission.assign";
+        public const string AssignRole = "role.assign";
+        public const string CreateRole = "role.create";
+        public const string CreateUser = "user.create";
     }
 }

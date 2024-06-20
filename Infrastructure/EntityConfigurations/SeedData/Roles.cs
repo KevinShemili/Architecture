@@ -8,12 +8,14 @@ namespace Infrastructure.EntityConfigurations.SeedData
         {
             Id = 1,
             Name = "administrator",
+            DateCreated = DateTime.UtcNow
         };
 
         public static readonly Role BasicUser = new Role
         {
             Id = 2,
-            Name = "basic-user",
+            Name = "user",
+            DateCreated = DateTime.UtcNow
         };
 
         public static readonly List<Role> SeedRoles =

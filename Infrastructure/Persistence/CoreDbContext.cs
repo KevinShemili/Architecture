@@ -84,6 +84,7 @@ namespace Infrastructure.Persistence {
 
 			if (entity is AuditableEntityBase auditableEntity) {
 				auditableEntity.DateCreated = DateTime.UtcNow;
+				auditableEntity.DateUpdated = DateTime.UtcNow;
 			}
 
 			_ = _databaseContext.Set<TEntity>().Update(entity);
