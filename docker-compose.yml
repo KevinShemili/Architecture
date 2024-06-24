@@ -27,9 +27,39 @@ services:
     networks:
       - webapinetwork
 
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.1
+    ports:
+      - 9200:9200 
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    networks:
+      - elastic
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.14.1
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://localhost:9200
+    networks:
+      - elastic
+
 networks:
-   webapinetwork:
-     driver: bridge 
+  webapinetwork:
+    driver: bridge 
+  elastic:
+    driver: bridge
 
 volumes:
-    mssql-volume:
+   mssql-volume:
+   elasticsearch-data:

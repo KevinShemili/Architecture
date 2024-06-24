@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Exceptions;
+using Serilog.Sinks.Elasticsearch;
 using System.Reflection;
 using System.Text;
 using WebAPI.Middleware;
@@ -90,6 +93,9 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+ConfigureLogs(builder, configuration);
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
 // Call here if you want to apply migrations directly when starting application
@@ -123,4 +129,40 @@ static void ConfigureSwagger(WebApplication app)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+static void ConfigureLogs(WebApplicationBuilder builder, IConfiguration configuration)
+{
+    var elasticUri = configuration["ElasticConfiguration:Uri"]!;
+    var indexFormat = ($"{Assembly.GetExecutingAssembly().GetName().Name!.Replace(".", "-")}-" +
+                       $"{builder.Environment.EnvironmentName}-" +
+                       $"{DateTime.UtcNow:yyyy-MM}")
+                      .ToLower();
+
+    Log.Logger = new LoggerConfiguration()
+        .Enrich.FromLogContext()
+        .Enrich.WithExceptionDetails()
+        .WriteTo.Console()
+        .WriteTo.Debug()
+        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUri))
+        {
+            AutoRegisterTemplate = true,
+            AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv8,
+            DetectElasticsearchVersion = true,
+            IndexFormat = indexFormat,
+            NumberOfReplicas = 1,
+            NumberOfShards = 2,
+            EmitEventFailure = EmitEventFailureHandling.RaiseCallback | 
+                               EmitEventFailureHandling.ThrowException,
+            FailureCallback = (logEvent, exception) => {
+                var logMessage = logEvent.Exception?.Message is not null
+                    ? $"Unable to submit event {logEvent.Exception.Message}. With exception: {exception.Message}"
+                    : $"Unable to submit event. With exception: {exception.Message}";
+
+                Console.WriteLine(logMessage);
+            }            
+        })
+        .Enrich.WithProperty("Environment", builder.Environment.EnvironmentName)
+        //.ReadFrom.Configuration(configuration)
+        .CreateLogger();
 }
