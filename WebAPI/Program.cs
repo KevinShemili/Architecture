@@ -152,15 +152,16 @@ static void ConfigureLogs(WebApplicationBuilder builder, IConfiguration configur
             IndexFormat = indexFormat,
             NumberOfReplicas = 1,
             NumberOfShards = 2,
-            EmitEventFailure = EmitEventFailureHandling.RaiseCallback | 
+            EmitEventFailure = EmitEventFailureHandling.RaiseCallback |
                                EmitEventFailureHandling.ThrowException,
-            FailureCallback = (logEvent, exception) => {
+            FailureCallback = (logEvent, exception) =>
+            {
                 var logMessage = logEvent.Exception?.Message is not null
                     ? $"Unable to submit event {logEvent.Exception.Message}. With exception: {exception.Message}"
                     : $"Unable to submit event. With exception: {exception.Message}";
 
                 Console.WriteLine(logMessage);
-            }            
+            }
         })
         .Enrich.WithProperty("Environment", builder.Environment.EnvironmentName)
         //.ReadFrom.Configuration(configuration)

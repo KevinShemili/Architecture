@@ -2,7 +2,7 @@
 
 namespace Application.Behavior.ResultPattern
 {
-    public class Result<T>
+    public sealed class Result<T>
     {
         private Result(bool isSuccess, T value, Error error)
         {
