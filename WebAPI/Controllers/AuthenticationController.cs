@@ -11,9 +11,15 @@ namespace WebAPI.Controllers
 {
     public class AuthenticationController : MainControllerBase
     {
-        public AuthenticationController(IMediator mediator, IMapper mapper) :
+        private readonly ILogger<AuthenticationController> _logger;
+
+        public AuthenticationController(IMediator mediator,
+                                        IMapper mapper,
+                                        ILogger<AuthenticationController> logger) :
             base(mediator, mapper)
-        { }
+        {
+            _logger = logger;
+        }
 
         [AllowAnonymous]
         [SwaggerOperation(Summary = "Register Account")]
@@ -95,5 +101,14 @@ namespace WebAPI.Controllers
         {
             return Ok();
         }*/
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult ELK()
+        {
+            var random = new Random();
+            _logger.LogInformation($"Random: {random.Next(0, 50)}");
+            return Ok();
+        }
     }
 }
